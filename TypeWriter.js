@@ -24,7 +24,7 @@ const propTypes = {
 
 const defaultProps = {
   typing: 0,
-  maxDelay: 100,
+  maxDelay: 30,
   minDelay: 20,
 };
 

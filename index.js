@@ -11,6 +11,7 @@ import {
 import TypeWriter from './TypeWriter';
 
 const propTypes = {
+  delegatePress: PropTypes.func,
   allowSkip: PropTypes.bool,
   allowSpeechReplay: PropTypes.bool,
   onSpeechEnd: PropTypes.func,
@@ -24,6 +25,7 @@ const propTypes = {
   speechBubbleTextStyle: View.propTypes.style,
   speeches: PropTypes.array.isRequired,
   typeWriterStyle: Text.propTypes.style,
+  displayIcons: PropTypes.bool,
   nextStyle: View.propTypes.style,
   style: View.propTypes.style,
 };
@@ -89,8 +91,8 @@ class SpeechBubble extends React.Component {
   }
 
   onSpeechBubblePress() {
-    const { allowSkip, speechIndex, typeEnd } = this.state;
-    const { onSpeechNext, onSpeechReplay, speeches } = this.props;
+    const { speechIndex, typeEnd } = this.state;
+    const { allowSkip, onSpeechNext, onSpeechReplay, speeches } = this.props;
 
     if (allowSkip || typeEnd) {
       if (speechIndex + 1 < speeches.length) {
@@ -98,7 +100,7 @@ class SpeechBubble extends React.Component {
 
         // Next speech
         if (onSpeechNext) {
-          onSpeechNext();
+          onSpeechNext(speechIndex + 1);
         }
 
         this.setState({
@@ -107,6 +109,7 @@ class SpeechBubble extends React.Component {
           lastSpeech,
         });
       } else {
+        onSpeechNext(speechIndex + 1);
         // Replay speech
         if (onSpeechReplay) {
           onSpeechReplay();
@@ -158,7 +161,7 @@ class SpeechBubble extends React.Component {
   }
 
   get NextSpeechBubble() {
-    return !this.state.lastSpeech ? (
+    return (!this.state.lastSpeech && this.props.displayIcons) ? (
       <Animated.View
         style={[
           this.props.nextStyle || styles.dialogNext,
@@ -196,7 +199,7 @@ class SpeechBubble extends React.Component {
       outputRange: ['0deg', '360deg'],
     });
 
-    return this.state.lastSpeech ? (
+    return ( this.state.lastSpeech && this.props.displayIcons ) ? (
       <Animated.View
         style={[
           this.props.nextStyle || styles.dialogNext,
