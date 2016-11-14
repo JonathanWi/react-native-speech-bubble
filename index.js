@@ -50,9 +50,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     overflow: 'hidden',
   },
-  dialogText: {
-    flex: 1,
-  },
   dialogNext: {
     flexDirection: 'row',
     justifyContent: 'center',
